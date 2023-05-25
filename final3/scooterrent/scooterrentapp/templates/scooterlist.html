@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    html {
+      overflow: overlay;
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px; /* You can set this to your preference */
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0); /* This is semi-transparent */
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent; 
+    }
+
+  </style>
+  <style>
+    .gradient {
+      background: linear-gradient(90deg, rgba(239,68,68,1) 0%, rgba(229,9,20,1) 100%);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="container mx-auto px-4 pt-16">
+    <div class="flex flex-wrap -mx-4">
+      <!-- Start of product block -->
+      {% for scooter in scooters %}
+      <div class="w-full sm:w-1/2 lg:w-1/4 p-4">
+          <div class="shadow-2xl rounded-xl bg-gray-800 overflow-hidden">
+              <img class="w-full h-64 object-cover" src="{{ scooter.image.url }}" alt="Scooter Image">
+              <div class="p-6">
+                  <h2 class="font-bold text-2xl mb-2">{{ scooter.name }}</h2>
+                  <p class="text-gray-400 mb-4">Kilometer Range: {{ scooter.kilometer_range }} km</p>
+                  <div class="flex items-center justify-between">
+                      <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">${{ scooter.price }}</span>
+                      <form method="post" action="{% url 'pick_scooter' %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="scooter_name" value="{{ scooter.name }}">
+                          <button type="submit" class="gradient text-white font-bold py-2 px-4 rounded">Pick</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>    
+      {% endfor %}
+      <!-- End of product block -->
+    </div>
+  </div>
+</body>
+</html>
